@@ -3,7 +3,6 @@ package dao;
 import entity.Menu;
 import entity.Restaurant;
 import util.DBConnection;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
 public class MenuDAO extends DBConnection {
 
     public void create(Menu menu) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO Menu (name, restaurant_id) VALUES (?, ?)")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO menu (name, restaurant_id) VALUES (?, ?)")) {
 
             ps.setString(1, menu.getName());
             ps.setInt(2, menu.getRestaurant().getId()); // restaurant_id ilişkilendirildi
@@ -24,12 +23,12 @@ public class MenuDAO extends DBConnection {
 
     public List<Menu> read() {
         List<Menu> list = new ArrayList<>();
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Menu"); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM menu"); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Restaurant restaurant = null;
                 int restaurantId = rs.getInt("restaurant_id");
-                if (!rs.wasNull()) { // Eğer restaurant_id NULL değilse, ilgili restaurant'ı getir
+                if (!rs.wasNull()) {
                     restaurant = new RestaurantDAO().findById(restaurantId);
                 }
 
@@ -49,16 +48,21 @@ public class MenuDAO extends DBConnection {
 
     public Menu findById(int id) {
         Menu menu = null;
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Menu WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM menu WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                Restaurant rst = null;
+                if (!rs.wasNull()) {
+                    rst = new RestaurantDAO().findById(rs.getInt("restaurant_id"));
+                }
+
                 menu = new Menu(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        new RestaurantDAO().findById(rs.getInt("restaurant_id")) // Restaurant ilişkisi
+                        rst
                 );
             }
 
@@ -69,7 +73,7 @@ public class MenuDAO extends DBConnection {
     }
 
     public void update(Menu menu) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE Menu SET name = ?, restaurant_id = ? WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE menu SET name = ?, restaurant_id = ? WHERE id = ?")) {
 
             ps.setString(1, menu.getName());
             ps.setInt(2, menu.getRestaurant().getId()); // restaurant_id güncelleniyor
@@ -81,14 +85,19 @@ public class MenuDAO extends DBConnection {
         }
     }
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("DELETE FROM Menu WHERE id = ?")) {
+    public void delete(Menu sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println("MenuDAO.delete hatası: " + e.getMessage());
+            String query0 = "UPDATE menu SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from menu where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

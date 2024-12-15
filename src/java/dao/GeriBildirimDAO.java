@@ -11,7 +11,7 @@ public class GeriBildirimDAO extends DBConnection {
 
     public void create(GeriBildirim geriBildirim) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO GeriBildirim (yorum, user_id) VALUES (?, ?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO geribildirim (yorum, user_id) VALUES (?, ?)")) {
 
             ps.setString(1, geriBildirim.getYorum());
             ps.setInt(2, geriBildirim.getUser().getId());
@@ -25,7 +25,7 @@ public class GeriBildirimDAO extends DBConnection {
     public List<GeriBildirim> read() {
         List<GeriBildirim> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM GeriBildirim");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM geribildirim");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -45,7 +45,7 @@ public class GeriBildirimDAO extends DBConnection {
 
     public void update(GeriBildirim geriBildirim) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE GeriBildirim SET yorum = ?, user_id = ? WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE geribildirim SET yorum = ?, user_id = ? WHERE id = ?")) {
 
             ps.setString(1, geriBildirim.getYorum());
             ps.setInt(2, geriBildirim.getUser().getId());
@@ -57,15 +57,19 @@ public class GeriBildirimDAO extends DBConnection {
         }
     }
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM GeriBildirim WHERE id = ?")) {
+    public void delete(GeriBildirim sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            String query0 = "UPDATE geribildirim SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from geribildirim where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

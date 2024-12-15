@@ -1,27 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bean;
 
-/**
- *
- * @author Halil
- */
 import dao.IndirimDAO;
 import entity.Indirim;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
+
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = " indirimBean")
+@Named("indirimBean")
 @SessionScoped
 public class IndirimBean implements Serializable {
 
-    private Indirim entity = new Indirim();
-    private List<Indirim> list;
     private IndirimDAO dao = new IndirimDAO();
+    private List<Indirim> list;
+    private Indirim entity = new Indirim();
+
 
     public Indirim getEntity() {
         return entity;
@@ -30,28 +25,49 @@ public class IndirimBean implements Serializable {
     public void setEntity(Indirim entity) {
         this.entity = entity;
     }
+    public IndirimDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new IndirimDAO();
+        }
+        return dao;
+    }
+
+    public void setDao(IndirimDAO dao) {
+        this.dao = dao;
+    }
 
     public List<Indirim> getList() {
-        if (list == null) {
-            list = dao.read();
-        }
+        this.list = getDao().read();
         return list;
     }
 
+    public void setList(List<Indirim> list) {
+        this.list = list;
+    }
+
     public void create() {
-        dao.create(entity);
-        list = dao.read();
-        entity = new Indirim();
+        this.getDao().create(entity);
+        this.entity = new Indirim();
     }
 
-    public void update() {
-        dao.update(entity);
-        list = dao.read();
-        entity = new Indirim();
+    public void update(Indirim Indirim) {
+        try {
+            this.getDao().update(Indirim);
+            System.out.println("Indirim başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
+        }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
-        list = dao.read();
+    public void delete(Indirim sa) {
+        this.getDao().delete(sa);
+    }
+
+    public Indirim getSelectedIndirim() {
+        return entity;
+    }
+
+    public void setSelectedIndirim(Indirim selectedIndirim) {
+        this.entity = selectedIndirim;
     }
 }

@@ -4,16 +4,18 @@ import dao.TatliDAO;
 import entity.Tatli;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
+
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = " tatliBean")
+@Named("tatliBean")
 @SessionScoped
 public class TatliBean implements Serializable {
 
-    private Tatli entity = new Tatli();
-    private List<Tatli> list;
     private TatliDAO dao = new TatliDAO();
+    private List<Tatli> list;
+    private Tatli entity = new Tatli();
+
 
     public Tatli getEntity() {
         return entity;
@@ -22,28 +24,49 @@ public class TatliBean implements Serializable {
     public void setEntity(Tatli entity) {
         this.entity = entity;
     }
+    public TatliDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new TatliDAO();
+        }
+        return dao;
+    }
+
+    public void setDao(TatliDAO dao) {
+        this.dao = dao;
+    }
 
     public List<Tatli> getList() {
-        if (list == null) {
-            list = dao.read();
-        }
+        this.list = getDao().read();
         return list;
     }
 
+    public void setList(List<Tatli> list) {
+        this.list = list;
+    }
+
     public void create() {
-        dao.create(entity);
-        list = dao.read(); // Listeyi güncelle
-        entity = new Tatli(); // Formu sıfırla
+        this.getDao().create(entity);
+        this.entity = new Tatli();
     }
 
-    public void update() {
-        dao.update(entity);
-        list = dao.read(); // Listeyi güncelle
-        entity = new Tatli(); // Formu sıfırla
+    public void update(Tatli Tatli) {
+        try {
+            this.getDao().update(Tatli);
+            System.out.println("Tatli başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
+        }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
-        list = dao.read(); // Listeyi güncelle
+    public void delete(Tatli sa) {
+        this.getDao().delete(sa);
+    }
+
+    public Tatli getSelectedTatli() {
+        return entity;
+    }
+
+    public void setSelectedTatli(Tatli selectedTatli) {
+        this.entity = selectedTatli;
     }
 }

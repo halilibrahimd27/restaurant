@@ -17,39 +17,43 @@
             <h:form id="silll">
                 <h:commandLink value="Geri" action="#{navigationBean.navigateTo('KullaniciIslemleri')}" styleClass="geriButton" />
 
-                <h:dataTable value="#{kullanıcıBean.list}" var="kul"  styleClass="table table-striped">
+                <h:dataTable value="#{usersBean.list}" var="kul" styleClass="table table-striped">
 
                     <h:column  styleClass="font-weight-bold">
                         <f:facet   name="header">Kullanıcı Adı</f:facet>
-                            #{kul.name}
+                            #{kul.userName}
                     </h:column>
-                    
+
                     <h:column  styleClass="font-weight-bold">
-                        <f:facet   name="header">Email</f:facet>
-                            #{kul.email}
+                        <f:facet   name="header">Parola</f:facet>
+                            #{kul.password}
                     </h:column>
 
 
                     <h:column styleClass="font-weight-bold">
-                        <f:facet   name="header">Şifre</f:facet>
-                            #{kul.password}
+                        <f:facet   name="header">Adres</f:facet>
+                            #{kul.address}
+                    </h:column>
+
+                    <h:column styleClass="font-weight-bold">
+                        <f:facet   name="header">Telefon</f:facet>
+                            #{kul.phone}
                     </h:column>
 
                     <h:column styleClass="font-weight-bold">
                         <f:facet   name="header">İşlem</f:facet>
-                        <h:commandButton styleClass="btn btn-danger button" value="Sil" action="#{kullanıcıBean.delete(kul)}">
+                        <h:commandButton styleClass="btn btn-danger button" value="Sil" action="#{usersBean.delete(kul)}">
+
+                        </h:commandButton>
+
+                        <h:commandButton styleClass="btn btn-primary button" value="Güncelle" action="#{usersBean.updateForm(kul)}">
 
                         </h:commandButton>
                     </h:column>
 
+
+
                 </h:dataTable>
-
-<!--                <div class="btn-group">
-                    <pre>Page  of </pre>
-                    <h:commandButton action="" value="geri" styleClass="btn btn-outline-dark"></h:commandButton>
-                    <h:commandButton action="" value="ileri" styleClass="btn btn-outline-dark"></h:commandButton>
-                </div>-->
-
             </h:form>
 
         </div>

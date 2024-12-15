@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalisanDAO extends DBConnection {
-
-    // CREATE: Yeni bir çalışan kaydı ekler
     public void create(Calisan calisan) {
         try (Connection conn = this.getConnect();
              PreparedStatement ps = conn.prepareStatement("INSERT INTO calisan (name) VALUES (?)")) {
@@ -22,7 +20,6 @@ public class CalisanDAO extends DBConnection {
         }
     }
 
-    // READ: Tüm çalışan kayıtlarını getirir
     public List<Calisan> read() {
         List<Calisan> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
@@ -80,15 +77,19 @@ public class CalisanDAO extends DBConnection {
     }
 
     // DELETE: Bir çalışan kaydını siler
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM calisan WHERE id = ?")) {
+      public void delete(Calisan c) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println("CalisanDAO.delete hatası: " + e.getMessage());
+            String query0 = "UPDATE calisan SET id = id - 1 WHERE id > " + c.getId();
+            String query1 = "DELETE from admin where id=" + c.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

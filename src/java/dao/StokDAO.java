@@ -13,7 +13,7 @@ import java.util.List;
 public class StokDAO extends DBConnection {
 
     public void create(Stok stok) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO Stok (miktar, yemek_id, icecek_id, tatli_id, tedarikci_id) VALUES (?, ?, ?, ?, ?)")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO stok (miktar, yemek_id, icecek_id, tatli_id, tedarikci_id) VALUES (?, ?, ?, ?, ?)")) {
 
             ps.setInt(1, stok.getMiktar());
             ps.setInt(2, stok.getYemek().getId());
@@ -29,7 +29,7 @@ public class StokDAO extends DBConnection {
 
     public List<Stok> read() {
         List<Stok> stokList = new ArrayList<>();
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Stok"); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM stok"); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 // Yemek ilişkisini kontrol et
@@ -63,7 +63,7 @@ public class StokDAO extends DBConnection {
     }
 
     public void update(Stok stok) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE Stok SET miktar = ?, yemek_id = ?, icecek_id = ?, tatli_id = ?, tedarikci_id = ? WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE stok SET miktar = ?, yemek_id = ?, icecek_id = ?, tatli_id = ?, tedarikci_id = ? WHERE id = ?")) {
 
             ps.setInt(1, stok.getMiktar());
             ps.setInt(2, stok.getYemek().getId());
@@ -78,20 +78,25 @@ public class StokDAO extends DBConnection {
         }
     }
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("DELETE FROM Stok WHERE id = ?")) {
+    public void delete(Stok sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            String query0 = "UPDATE stok SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from stok where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 
     public Yemek findById(int id) {
         Yemek yemek = null;
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Yemek WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM yemek WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

@@ -1,57 +1,69 @@
 package dao;
 
 import entity.Users;
-import util.DBConnection;
-
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import util.DBConnection;
 
 public class UsersDAO extends DBConnection {
+    
+    public int newUserId;
 
-    // CREATE: Yeni bir kullanıcı ekler
-    public void create(Users user) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO Users (userName, adress, password) VALUES (?, ?, ?)")) {
+    public boolean isValidUser(String name, String password) {
 
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getAdress());
-            ps.setString(3, user.getPassword());
-            ps.executeUpdate();
+        boolean isValid = false;
+        jakarta.resource.cci.Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
 
+        try {
+            String sql = "SELECT id FROM users WHERE username = ? AND password = ?";
+            statement = this.getConnect().prepareStatement(sql);
+            statement.setString(1, name);
+            statement.setString(2, password);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                newUserId = resultSet.getInt("id");
+                isValid = true;
+            }
         } catch (SQLException e) {
-            System.out.println("UsersDAO.create hatası: " + e.getMessage());
+            e.printStackTrace();
         }
+        return isValid;
     }
 
-    // READ: Tüm kullanıcıları getirir
+
     public List<Users> read() {
-        List<Users> list = new ArrayList<>();
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Users");
-             ResultSet rs = ps.executeQuery()) {
+
+        List<Users> userList = new ArrayList<>();
+
+        try {
+
+            Statement st = (Statement) this.getConnect().createStatement();
+
+            String query = "select * from users ";
+            ResultSet rs = st.executeQuery(query);
 
             while (rs.next()) {
-                Users user = new Users(
-                        rs.getInt("id"),
-                        rs.getString("userName"),
-                        rs.getString("adress"),
-                        rs.getString("password")
-                );
-                list.add(user);
+
+                userList.add(new Users(rs.getInt("id"), rs.getString("username"), rs.getString("password"), rs.getString("address"), rs.getString("phone")));
             }
 
-        } catch (SQLException e) {
-            System.out.println("UsersDAO.read hatası: " + e.getMessage());
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
-        return list;
+        return userList;
     }
 
-    // FIND BY ID: Belirli bir ID'ye göre kullanıcı getirir
     public Users findById(int id) {
         Users user = null;
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Users WHERE id = ?")) {
+        try (java.sql.Connection conn = this.getConnect(); 
+                PreparedStatement ps = conn.prepareStatement("SELECT * FROM users WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -59,9 +71,10 @@ public class UsersDAO extends DBConnection {
             if (rs.next()) {
                 user = new Users(
                         rs.getInt("id"),
-                        rs.getString("userName"),
-                        rs.getString("adress"),
-                        rs.getString("password")
+                        rs.getString("username"),
+                        rs.getString("password"),
+                        rs.getString("address"),
+                        rs.getString("phone")
                 );
             }
 
@@ -71,32 +84,52 @@ public class UsersDAO extends DBConnection {
         return user;
     }
 
-    // UPDATE: Kullanıcı bilgilerini günceller
-    public void update(Users user) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE Users SET userName = ?, adress = ?, password = ? WHERE id = ?")) {
+    public void create(Users u) {
 
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getAdress());
-            ps.setString(3, user.getPassword());
-            ps.setInt(4, user.getId());
-            ps.executeUpdate();
+        try {
+
+            Statement st = (Statement) this.getConnect().createStatement();
+            st.executeUpdate("INSERT INTO users(username,password,address,phone) VALUES ('"
+                    + u.getUserName() + "','"
+                    + u.getPassword() + "','"
+                    + u.getAddress() + "','"
+                    + u.getPhone() + "')");
 
         } catch (SQLException e) {
-            System.out.println("UsersDAO.update hatası: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
-    // DELETE: Belirli bir kullanıcıyı siler
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Users WHERE id = ?")) {
+    public void delete(Users u) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
+            String query0 = "UPDATE users SET id = id - 1 WHERE id > " + u.getId();
+            String query1 = "DELETE from users where id=" + u.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+
+    }
+
+    public void update(Users u) {
+        try {
+            Statement st = this.getConnect().createStatement();
+            String query = "UPDATE users SET "
+                    + "username = '" + u.getUserName() + "', "
+                    + "password = '" + u.getPassword() + "', "
+                    + "address = '" + u.getAddress() + "', "
+                    + "phone = '" + u.getPhone() + "', "
+                    + "WHERE id = " + u.getId();
+            st.executeUpdate(query);
+            System.out.println("Users başarıyla güncellendi.");
         } catch (SQLException e) {
-            System.out.println("UsersDAO.delete hatası: " + e.getMessage());
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
         }
     }
+
 }

@@ -12,7 +12,7 @@ public class SiparisDAO extends DBConnection {
 
     public void create(Siparis siparis) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO Siparis (tarih, amount, user_id, masa_id) VALUES (?, ?, ?, ?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO siparis (tarih, amount, user_id, masa_id) VALUES (?, ?, ?, ?)")) {
 
             ps.setDate(1, new java.sql.Date(siparis.getTarih().getTime()));
             ps.setBigDecimal(2, siparis.getAmount());
@@ -28,7 +28,7 @@ public class SiparisDAO extends DBConnection {
     public List<Siparis> read() {
         List<Siparis> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Siparis");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM siparis");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -50,7 +50,7 @@ public class SiparisDAO extends DBConnection {
 
     public void update(Siparis siparis) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE Siparis SET tarih = ?, amount = ?, user_id = ?, masa_id = ? WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE siparis SET tarih = ?, amount = ?, user_id = ?, masa_id = ? WHERE id = ?")) {
 
             ps.setDate(1, new java.sql.Date(siparis.getTarih().getTime()));
             ps.setBigDecimal(2, siparis.getAmount());
@@ -64,22 +64,25 @@ public class SiparisDAO extends DBConnection {
         }
     }
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Siparis WHERE id = ?")) {
+    public void delete(Siparis sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            String query0 = "UPDATE siparis SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from siparis where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
-    }
 
+    }
     public Siparis findById(int id) {
         Siparis siparis = null;
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Siparis WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM siparis WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

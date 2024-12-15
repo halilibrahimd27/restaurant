@@ -10,7 +10,7 @@ import java.util.List;
 public class TatliDAO extends DBConnection {
 
     public void create(Tatli tatli) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO Tatli (name, menu_id) VALUES (?, ?)")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO tatli(name, menu_id) VALUES (?, ?)")) {
 
             ps.setString(1, tatli.getName());
             ps.setInt(2, tatli.getMenu().getId());
@@ -23,7 +23,7 @@ public class TatliDAO extends DBConnection {
 
     public List<Tatli> read() {
         List<Tatli> list = new ArrayList<>();
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Tatli"); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM tatli"); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Tatli tatli = new Tatli(
@@ -41,7 +41,7 @@ public class TatliDAO extends DBConnection {
     }
 
     public void update(Tatli tatli) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE Tatli SET name = ?, menu_id = ? WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE tatli SET name = ?, menu_id = ? WHERE id = ?")) {
 
             ps.setString(1, tatli.getName());
             ps.setInt(2, tatli.getMenu().getId());
@@ -53,15 +53,20 @@ public class TatliDAO extends DBConnection {
         }
     }
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("DELETE FROM Tatli WHERE id = ?")) {
+    public void delete(Tatli sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            String query0 = "UPDATE tatli SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from tatli where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 
     public Tatli findById(int id) {

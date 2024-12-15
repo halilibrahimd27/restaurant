@@ -12,7 +12,7 @@ public class MasaDAO extends DBConnection {
     // CREATE: Yeni bir masa kaydı ekler
     public void create(Masa masa) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO Masa (numara, durum) VALUES (?, ?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO masa (numara, durum) VALUES (?, ?)")) {
 
             ps.setInt(1, masa.getNumara());
             ps.setString(2, masa.getDurum());
@@ -27,7 +27,7 @@ public class MasaDAO extends DBConnection {
     public List<Masa> read() {
         List<Masa> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Masa");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM masa");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -50,7 +50,7 @@ public class MasaDAO extends DBConnection {
     public Masa findById(int id) {
         Masa masa = null;
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Masa WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM masa WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -73,7 +73,7 @@ public class MasaDAO extends DBConnection {
     // UPDATE: Bir masa kaydını günceller
     public void update(Masa masa) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE Masa SET numara = ?, durum = ? WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE masa SET numara = ?, durum = ? WHERE id = ?")) {
 
             ps.setInt(1, masa.getNumara());
             ps.setString(2, masa.getDurum());
@@ -85,16 +85,19 @@ public class MasaDAO extends DBConnection {
         }
     }
 
-    // DELETE: Belirli bir masa kaydını siler
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Masa WHERE id = ?")) {
+    public void delete(Masa sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println("MasaDAO.delete hatası: " + e.getMessage());
+            String query0 = "UPDATE masa SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from masa where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

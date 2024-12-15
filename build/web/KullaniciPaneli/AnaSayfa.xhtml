@@ -25,14 +25,14 @@
             <div class="girişKısmı-bottom">
                 <h:form id="form-ayarları">
                     <p>Kullanıcı Adı :</p>
-                    <h:inputText id="username" value="#{kullanıcıBean.entity.name}" styleClass="users">
+                    <h:inputText id="username" value="#{usersBean.entity.userName}" styleClass="users">
                         <p:ajax event="keyup" render="username, password, header-right-form, header-right-Profil"/>
                     </h:inputText>
                     <p>Password :</p>
-                    <h:inputSecret id="password" value="#{kullanıcıBean.entity.password}" styleClass="password">
+                    <h:inputSecret id="password" value="#{usersBean.entity.password}" styleClass="password">
                         <p:ajax event="keyup" render="username, password, header-right-form, header-right-Profil"/>
                     </h:inputSecret>
-                    <h:commandButton value="Giriş Yap" action="#{kullanıcıBean.login()}" styleClass="buttonss">
+                    <h:commandButton value="Giriş Yap" action="#{usersBean.login()}" styleClass="buttonss">
                         <p:ajax execute="@form" render="header-right-form, header-right-Profil, header-right"/>
                     </h:commandButton>
                 </h:form>
@@ -43,17 +43,16 @@
                 <div class="header-left">
                     <h:form styleClass="header-left-form">
                         <h:commandLink action="AnaSayfa?faces-redirect=true" styleClass="navbtn" value="AnaSayfa"/>
-                        <h:commandLink action="Film?faces-redirect=true" styleClass="navbtn" value="Filmler"/>
-                        <h:commandLink action="Dizi?faces-redirect=true" styleClass="navbtn" value="Diziler"/>
-                        <h:commandLink action="VizyondakiFilmler?faces-redirect=true" styleClass="navbtn" value="Vizyondaki Filmler"/>
-                        <h:commandLink action="TrenddekiDiziler?faces-redirect=true" styleClass="navbtn" value="Trenddeki Diziler"/>
-                        <h:commandLink action="Kitaplik?faces-redirect=true" styleClass="navbtn" value="Kitaplığım"/>
+                        <h:commandLink action="Restaurant?faces-redirect=true" styleClass="navbtn" value="Restaurant"/>
+                        <h:commandLink action="Menu?faces-redirect=true" styleClass="navbtn" value="Menü"/>
+                        <h:commandLink action="Rezervasyon?faces-redirect=true" styleClass="navbtn" value="Rezervasyon"/>
+                        <h:commandLink action="SiparisVer?faces-redirect=true" styleClass="navbtn" value="Sipariş Ver"/>
                         <h:commandLink action="Iletisim?faces-redirect=true" styleClass="navbtn" value="İletişim"/>
                     </h:form>
                 </div>
                 <div class="header-top">
                     <form class="form-inline" id="form">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Film veya Dizi arayın" aria-label="Search"/>
+                        <input class="form-control mr-sm-2" type="search" placeholder="Restaurant arayın" aria-label="Search"/>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ara</button>
                     </form>
                 </div>
@@ -72,23 +71,21 @@
                 <h:form rendered="#{validUser!=null}" id="header-right-Profil">
                     <div class="header-right-Profil">
                         <i class="fa-regular fa-user"></i>
-                        <h:outputText value="#{kullanıcıBean.entity.name}" styleClass="kullanıcıİsmi" id="a"/>
+                        <h:outputText value="#{usersBean.entity.userName}" styleClass="kullanıcıİsmi" id="a"/>
                     </div>
                 </h:form>
                 <h:form rendered="#{validUser!=null}">
-                    <h:commandButton action="#{kullanıcıBean.logout()}" value="logout" styleClass="buttonsss"/>
+                    <h:commandButton action="#{usersBean.logout()}" value="logout" styleClass="buttonsss"/>
                 </h:form>
             </header>
             <section class="section">
-                <!-- First Carousel -->
-                <!-- Film Carousel -->
+                
+                <h1 style="color:white">Yemekler</h1>
                 <div id="filmCarousel" class="carousel slide w-50 mx-auto" data-ride="carousel">
                     <div class="carousel-inner" style="position: relative;">
-                        <h1 style="color:white">Filmler ve Diziler</h1>
-                        <ui:repeat value="#{filmveDiziBean.list}" var="filmvedizi" varStatus="status">
+                        <ui:repeat value="#{yemekBean.list}" var="filmvedizi" varStatus="status">
                             <div class="carousel-item #{status.index == 0 ? 'active' : ''}">
-                                <h:graphicImage library="images" value="/file/#{filmvedizi.document.fileName}" styleClass="d-block w-100" alt="Slide #{status.index + 1}"/>
-                                <h1 class="item-h1">#{filmvedizi.adi}</h1>
+                                <h1 class="item-h1">#{yemek.name}</h1>
                             </div>
                         </ui:repeat>
                     </div>
@@ -102,13 +99,12 @@
                     </a>
                 </div>
                 <!-- Second Carousel with Unique ID -->
+                <h1 style="color:white">İcecekler</h1>
                 <div id="trendCarousel" class="carousel slide w-50 mx-auto" data-ride="carousel">
                     <div class="carousel-inner" style="position: relative;">
-                        <h1 style="color:white">Trenddeki Diziler</h1>
-                        <ui:repeat value="#{trenddekiDizilerBean.list}" var="filmvedizii" varStatus="status">
+                        <ui:repeat value="#{icecekBean.list}" var="filmvedizii" varStatus="status">
                             <div class="carousel-item #{status.index == 0 ? 'active' : ''}">
-                                <h:graphicImage library="images" value="/file/#{filmvedizii.fd.document.fileName}" styleClass="d-block w-100" alt="Slide #{status.index + 1}"/>
-                                <h1 class="item-h1">#{filmvedizii.fd.adi}</h1>
+                                <h1 class="item-h1">#{icecek.name}</h1>
                             </div>
                         </ui:repeat>
                     </div>
@@ -121,13 +117,13 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
+                <h1 style="color:white">Tatlilar</h1>
+
                 <div id="vizyonCarousel" class="carousel slide w-50 mx-auto" data-ride="carousel">
                     <div class="carousel-inner" style="position: relative;">
-                        <h1 style="color:white">Vizyondaki Filmler</h1>
-                        <ui:repeat value="#{vizyondakiFilmlerBean.list}" var="filmvedizii" varStatus="status">
+                        <ui:repeat value="#{tatliBean.list}" var="filmvedizii" varStatus="status">
                             <div class="carousel-item #{status.index == 0 ? 'active' : ''}">
-                                <h:graphicImage library="images" value="/file/#{filmvedizii.fd.document.fileName}" styleClass="d-block w-100" alt="Slide #{status.index + 1}"/>
-                                <h1 class="item-h1">#{filmvedizii.fd.adi}</h1>
+                                <h1 class="item-h1">#{tatli.name}</h1>
                             </div>
                         </ui:repeat>
                     </div>
@@ -141,6 +137,7 @@
                     </a>
                 </div>
             </section>
+
         </div>
     </h:body>
     <footer>
@@ -149,14 +146,14 @@
                 <div class="row">
                     <div class="col-lg-4">
                         <h4>Hakkımızda </h4>
-                        <p> FilmolojiFilmolojiFilmolojiFilmolojiFilmoloji  </p>
+                        <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.   </p>
                     </div>
                     <div class="col-md-4">
                         <h4>Bilgi</h4>
                         <ul class="adresler">
-                            <li><i class="fa fa-map-marker"></i>FilmolojiFilmolojiFilmolojiFilmoloji</li>
-                            <li><i class="fa fa-envelope"></i><a href="mailto:#">filmoloji@gmail.com</a></li>
-                            <li><i class="fa fa-mobile" aria-hidden="true"></i> <a href="tel:4444 3844">444 3844</a></li>
+                            <li><i class="fa fa-map-marker"></i>Lorem ipsum dolor sit amet.</li>
+                            <li><i class="fa fa-envelope"></i><a href="mailto:#">support@gmail.com</a></li>
+                            <li><i class="fa fa-mobile" aria-hidden="true"></i> <a href="tel:4444 3844">444 38 44</a></li>
                         </ul>
                     </div>
                     <div class="col-md-4">
@@ -173,7 +170,7 @@
         <div class="footer-bottom">
             <div class="container">
                 <div class="col-sm-5">
-                    <p class="copyright">&copy; Tüm Hakları <strong>Filmoloji'ye</strong> aittir.</p>
+                    <p class="copyright">&copy; Tüm Hakları <strong>UNITY DEV GROUP'a</strong> aittir.</p>
                 </div>
             </div>
         </div>

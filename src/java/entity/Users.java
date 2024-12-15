@@ -2,21 +2,24 @@ package entity;
 
 public class Users {
 
-    private int id;              // Kullanıcının benzersiz kimliği
-    private String userName;     // Kullanıcının adı
-    private String adress;       // Kullanıcının adresi
-    private String password;     // Kullanıcının şifresi
-
-    public Users(int id, String userName, String adress, String password) {
-        this.id = id;
-        this.userName = userName;
-        this.adress = adress;
-        this.password = password;
-    }
+    private int id;    
+    private String username; 
+    private String password;     
+    private String address;
+    private String phone;
 
     public Users() {
+    
     }
-
+    
+    public Users(int id, String username, String password, String address, String phone) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.address = address;
+        this.phone = phone;
+    }
+    
     public int getId() {
         return id;
     }
@@ -26,26 +29,34 @@ public class Users {
     }
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getAdress() {
-        return adress;
-    }
-
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
         return password;
     }
-
+    
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

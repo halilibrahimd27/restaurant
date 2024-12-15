@@ -13,7 +13,7 @@ public class IndirimDAO extends DBConnection {
     // CREATE: Yeni bir indirim kaydı ekler
     public void create(Indirim indirim) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO Indirim (amount, kullanici_id) VALUES (?, ?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO indirim (amount, kullanici_id) VALUES (?, ?)")) {
 
             ps.setBigDecimal(1, indirim.getAmount());
             ps.setInt(2, indirim.getUser().getId()); // Kullanıcıyla ilişkilendirme
@@ -28,7 +28,7 @@ public class IndirimDAO extends DBConnection {
     public List<Indirim> read() {
         List<Indirim> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Indirim");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM indirim");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -56,7 +56,7 @@ public class IndirimDAO extends DBConnection {
     public Indirim findById(int id) {
         Indirim indirim = null;
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Indirim WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM indirim WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -84,7 +84,7 @@ public class IndirimDAO extends DBConnection {
     // UPDATE: Bir indirim kaydını günceller
     public void update(Indirim indirim) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE Indirim SET amount = ?, kullanici_id = ? WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE indirim SET amount = ?, kullanici_id = ? WHERE id = ?")) {
 
             ps.setBigDecimal(1, indirim.getAmount());
             ps.setInt(2, indirim.getUser().getId());
@@ -96,16 +96,19 @@ public class IndirimDAO extends DBConnection {
         }
     }
 
-    // DELETE: Bir indirim kaydını siler
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Indirim WHERE id = ?")) {
+    public void delete(Indirim sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println("IndirimDAO.delete hatası: " + e.getMessage());
+            String query0 = "UPDATE indirim SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from indirim where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

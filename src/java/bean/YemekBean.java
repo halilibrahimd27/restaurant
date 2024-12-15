@@ -2,87 +2,71 @@ package bean;
 
 import dao.YemekDAO;
 import entity.Yemek;
-import entity.Menu;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = "yemekBean")
+@Named("yemekBean")
 @SessionScoped
 public class YemekBean implements Serializable {
 
-    private YemekDAO yemekDAO;      // Yemek DAO sınıfı
-    private List<Yemek> yemekList; // Yemek kayıtları
-    private Yemek selectedYemek;   // Yemek oluşturma/güncelleme işlemleri için seçilen nesne
+    private YemekDAO dao = new YemekDAO();
+    private List<Yemek> list;
+    private Yemek entity = new Yemek();
 
-    private List<Menu> menuList;   // Menü listesi
-    private Menu selectedMenu;     // Seçilen Menü
 
-    @PostConstruct
-    public void init() {
-        this.yemekDAO = new YemekDAO();         // DAO örneği oluştur
-        this.yemekList = yemekDAO.read();       // Yemek listesini getir
-        this.selectedYemek = new Yemek();      // Boş bir Yemek nesnesi oluştur
+    public Yemek getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Yemek entity) {
+        this.entity = entity;
+    }
+    public YemekDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new YemekDAO();
+        }
+        return dao;
+    }
+
+    public void setDao(YemekDAO dao) {
+        this.dao = dao;
+    }
+
+    public List<Yemek> getList() {
+        this.list = getDao().read();
+        return list;
+    }
+
+    public void setList(List<Yemek> list) {
+        this.list = list;
     }
 
     public void create() {
-        if (this.selectedYemek != null) {
-            this.selectedYemek.setMenu(this.selectedMenu);  // Menü ilişkisini ayarla
-            yemekDAO.create(this.selectedYemek);           // DAO'da oluştur
-            this.yemekList = yemekDAO.read();              // Listeyi güncelle
-            this.selectedYemek = new Yemek();              // Formu sıfırla
+        this.getDao().create(entity);
+        this.entity = new Yemek();
+    }
+
+    public void update(Yemek Yemek) {
+        try {
+            this.getDao().update(Yemek);
+            System.out.println("Yemek başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
         }
     }
 
-    public void update() {
-        if (this.selectedYemek != null) {
-            this.selectedYemek.setMenu(this.selectedMenu);
-            yemekDAO.update(this.selectedYemek);
-            this.yemekList = yemekDAO.read();
-            this.selectedYemek = new Yemek();
-        }
-    }
-
-    public void delete(Yemek yemek) {
-        if (yemek != null) {
-            yemekDAO.delete(yemek.getId());
-            this.yemekList = yemekDAO.read();
-        }
-    }
-
-    // Getter ve Setter
-    public List<Yemek> getYemekList() {
-        return yemekList;
-    }
-
-    public void setYemekList(List<Yemek> yemekList) {
-        this.yemekList = yemekList;
+    public void delete(Yemek sa) {
+        this.getDao().delete(sa);
     }
 
     public Yemek getSelectedYemek() {
-        return selectedYemek;
+        return entity;
     }
 
     public void setSelectedYemek(Yemek selectedYemek) {
-        this.selectedYemek = selectedYemek;
-    }
-
-    public List<Menu> getMenuList() {
-        return menuList;
-    }
-
-    public void setMenuList(List<Menu> menuList) {
-        this.menuList = menuList;
-    }
-
-    public Menu getSelectedMenu() {
-        return selectedMenu;
-    }
-
-    public void setSelectedMenu(Menu selectedMenu) {
-        this.selectedMenu = selectedMenu;
+        this.entity = selectedYemek;
     }
 }

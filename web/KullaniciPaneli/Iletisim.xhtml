@@ -17,19 +17,18 @@
             <header class="header">
                 <div class="header-left">
                     <h:form styleClass="header-left-form">
-                        <h:commandLink action="AnaSayfa?faces-redirect=true" styleClass="navbtn" value="AnaSayfa" />
-                        <h:commandLink action="Film?faces-redirect=true" styleClass="navbtn" value="Filmler" />
-                        <h:commandLink action="Dizi?faces-redirect=true" styleClass="navbtn" value="Diziler" />
-                        <h:commandLink action="VizyondakiFilmler?faces-redirect=true" styleClass="navbtn" value="Vizyondaki Filmler" />
-                        <h:commandLink action="TrenddekiDiziler?faces-redirect=true" styleClass="navbtn" value="Trenddeki Diziler" />
-                        <h:commandLink action="Kitaplik?faces-redirect=true" styleClass="navbtn" value="Kitaplığım" />
-                        <h:commandLink action="Iletisim?faces-redirect=true" styleClass="navbtn" value="İletişim" />
+                        <h:commandLink action="AnaSayfa?faces-redirect=true" styleClass="navbtn" value="AnaSayfa"/>
+                        <h:commandLink action="Restaurant?faces-redirect=true" styleClass="navbtn" value="Restaurant"/>
+                        <h:commandLink action="Menu?faces-redirect=true" styleClass="navbtn" value="Menü"/>
+                        <h:commandLink action="Rezervasyon?faces-redirect=true" styleClass="navbtn" value="Rezervasyon"/>
+                        <h:commandLink action="SiparisVer?faces-redirect=true" styleClass="navbtn" value="Sipariş Ver"/>
+                        <h:commandLink action="Iletisim?faces-redirect=true" styleClass="navbtn" value="İletişim"/>
                     </h:form>
                 </div>
 
                 <div class="header-top">
                     <form class="form-inline" id="form">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Film veya Dizi arayın" aria-label="Search" />
+                        <input class="form-control mr-sm-2" type="search" placeholder="Restaurant arayın" aria-label="Search" />
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Ara</button>
                     </form>
                 </div>
@@ -49,12 +48,12 @@
                     <h:form rendered="#{validUser!=null}">
                         <div class="header-right-Profil">
                             <i class="fa-regular fa-user"></i>
-                            <h:outputText value="#{kullanıcıBean.entity.name}" styleClass="kullanıcıİsmi" id="a" />
+                            <h:outputText value="#{usersBean.entity.userName}" styleClass="kullanıcıİsmi" id="a" />
                         </div>
                     </h:form>
 
                     <h:form rendered="#{validUser!=null}">
-                        <h:commandButton action="#{kullanıcıBean.logout()}" value="logout" />
+                        <h:commandButton action="#{usersBean.logout()}" value="logout" />
                     </h:form>
                 </div>
             </header>
@@ -62,9 +61,9 @@
             <h:form>
                 <h:panelGrid columns="2">
                     <h:outputLabel value="Mesajınızı Yazın:" for="mesaj" style="color: blue"  />
-                    <h:inputTextarea id="mesaj" value="#{mesajlarBean.entity.mesaj}" cols="150" rows="5" required="true" requiredMessage="Mesaj boş olamaz." />
+                    <h:inputTextarea id="mesaj" value="#{iletisimBean.entity.mesaj}" cols="150" rows="5" required="true" requiredMessage="Mesaj boş olamaz." />
 
-                    <h:commandButton value="Gönder" action="#{mesajlarBean.create}" />
+                    <h:commandButton value="Gönder" action="#{iletisimBean.create()}" />
                     <h:message for="mesaj" style="color:red" />
                 </h:panelGrid>
             </h:form>

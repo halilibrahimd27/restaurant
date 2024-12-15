@@ -92,7 +92,7 @@ public class SuperAdminDAO extends DBConnection {
     public void update(SuperAdmin superAdmin) {
         try {
             Statement st = this.getConnect().createStatement();
-            String query = "UPDATE superadmin SET "
+            String query = "UPDATE admin SET "
                     + "username = '" + superAdmin.getUsername() + "', "
                     + "password = '" + superAdmin.getPassword() + "' "
                     + "WHERE id = " + superAdmin.getId();

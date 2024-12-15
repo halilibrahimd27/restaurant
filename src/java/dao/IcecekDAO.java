@@ -12,7 +12,7 @@ public class IcecekDAO extends DBConnection {
 
     // CREATE: Yeni bir içecek ekler
     public void create(Icecek icecek) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO Icecek (name, menu_id) VALUES (?, ?)")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO icecek (name, menu_id) VALUES (?, ?)")) {
 
             ps.setString(1, icecek.getName());
             ps.setInt(2, icecek.getMenu().getId()); // menu_id ile ilişkilendirme
@@ -23,28 +23,21 @@ public class IcecekDAO extends DBConnection {
         }
     }
 
-    // READ: Tüm içecekleri getirir
     public List<Icecek> read() {
         List<Icecek> list = new ArrayList<>();
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Icecek"); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM icecek"); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                Menu menu = null;
-                int menuId = rs.getInt("menu_id");
-                if (!rs.wasNull()) {
-                    menu = new MenuDAO().findById(menuId); // Menu nesnesini getir
-                }
-
                 Icecek icecek = new Icecek(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        menu
+                        new MenuDAO().findById(rs.getInt("menu_id"))
                 );
                 list.add(icecek);
             }
 
         } catch (SQLException e) {
-            System.out.println("IcecekDAO.read hatası: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
         return list;
     }
@@ -52,7 +45,7 @@ public class IcecekDAO extends DBConnection {
     // FIND BY ID: Belirli bir ID'ye göre içecek getirir
     public Icecek findById(int id) {
         Icecek icecek = null;
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Icecek WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM icecek WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -79,7 +72,7 @@ public class IcecekDAO extends DBConnection {
 
     // UPDATE: Bir içecek kaydını günceller
     public void update(Icecek icecek) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE Icecek SET name = ?, menu_id = ? WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE icecek SET name = ?, menu_id = ? WHERE id = ?")) {
 
             ps.setString(1, icecek.getName());
             ps.setInt(2, icecek.getMenu().getId());
@@ -91,15 +84,19 @@ public class IcecekDAO extends DBConnection {
         }
     }
 
-    // DELETE: Bir içecek kaydını siler
-    public void delete(int id) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("DELETE FROM Icecek WHERE id = ?")) {
+    public void delete(Icecek sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println("IcecekDAO.delete hatası: " + e.getMessage());
+            String query0 = "UPDATE icecek SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from icecek where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

@@ -12,32 +12,35 @@
     </h:head>
     <h:body>
 
-        
+
         <h:form id="kullanıcı-islemleri">
-            
+
             <h:commandLink value="Geri" action="#{navigationBean.navigateTo('KullaniciIslemleri')}" styleClass="geriButton" />
-            
-            <div class="kullanıcı-container">
-                <h1>Email : </h1>
-                <h:inputText  value="#{kullanıcıBean.entity.email}" styleClass="user" ></h:inputText>
-            </div>
-            
+
             <div class="kullanıcı-container">
                 <h1>Kullanıcı Adı : </h1>
-                <h:inputText  value="#{kullanıcıBean.entity.name}" styleClass="user" ></h:inputText>
+                <h:inputText  value="#{usersBean.entity.userName}" styleClass="user" ></h:inputText>
             </div>
-            
+
             <div class="kullanıcı-container">
                 <h1>Şifre : </h1>
-                <h:inputSecret id="password" value="#{kullanıcıBean.entity.password}" styleClass="password"  />
+                <h:inputSecret id="password" value="#{usersBean.entity.password}" styleClass="password"  />
             </div>
-            
-            
-           
-            <h:commandButton value="Kullanıcı Ekle" action="#{kullanıcıBean.create()}" styleClass="kullanıcıEkleButton">
-                     
+
+            <div class="kullanıcı-container">
+                <h1>Adres : </h1>
+                <h:inputText  value="#{usersBean.entity.address}" styleClass="user" ></h:inputText>
+            </div>
+
+            <div class="kullanıcı-container">
+                <h1>Telefon : </h1>
+                <h:inputText  value="#{usersBean.entity.phone}" styleClass="user" ></h:inputText>
+            </div>
+         
+            <h:commandButton value="Kullanıcı Ekle" action="#{usersBean.create()}" styleClass="kullanıcıEkleButton">
+
             </h:commandButton>
-            
+
         </h:form>
 
     </h:body>

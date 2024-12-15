@@ -75,8 +75,6 @@ public class GenericDAO<T> extends DBConnection {
             query.delete(query.length() - 2, query.length()).append(" WHERE id=?");
 
             PreparedStatement st = getConnect().prepareStatement(query.toString());
-            // set parameters for the PreparedStatement
-            // (Note: Reflection can be used here to set the values from the entity)
             st.executeUpdate();
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -5,11 +5,10 @@ import java.sql.DriverManager;
 
 public abstract class DBConnection {
 
-    // Singleton için tek bir instance
     private static Connection connection = null;
 
     public Connection getConnect() {
-        if (connection == null) { // Bağlantı daha önce oluşturulmadıysa oluştur
+        if (connection == null) {
             try {
                 Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(
@@ -22,6 +21,6 @@ public abstract class DBConnection {
                 System.err.println("Veritabanı bağlantı hatası: " + ex.getMessage());
             }
         }
-        return connection; // Var olan bağlantıyı döndür
+        return connection;
     }
 }

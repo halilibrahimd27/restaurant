@@ -1,27 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bean;
 
-/**
- *
- * @author Halil
- */
 import dao.IletisimDAO;
 import entity.Iletisim;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
+
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = " iletisimBean")
+@Named("iletisimBean")
 @SessionScoped
 public class IletisimBean implements Serializable {
 
-    private Iletisim entity = new Iletisim();
-    private List<Iletisim> list;
     private IletisimDAO dao = new IletisimDAO();
+    private List<Iletisim> list;
+    private Iletisim entity = new Iletisim();
+
 
     public Iletisim getEntity() {
         return entity;
@@ -30,29 +24,49 @@ public class IletisimBean implements Serializable {
     public void setEntity(Iletisim entity) {
         this.entity = entity;
     }
+    public IletisimDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new IletisimDAO();
+        }
+        return dao;
+    }
+
+    public void setDao(IletisimDAO dao) {
+        this.dao = dao;
+    }
 
     public List<Iletisim> getList() {
-        if (list == null) {
-            list = dao.read();
-        }
+        this.list = getDao().read();
         return list;
     }
 
+    public void setList(List<Iletisim> list) {
+        this.list = list;
+    }
+
     public void create() {
-        dao.create(entity);
-        list = dao.read();
-        entity = new Iletisim();
+        this.getDao().create(entity);
+        this.entity = new Iletisim();
     }
 
-    public void update() {
-        dao.update(entity);
-        list = dao.read();
-        entity = new Iletisim();
+    public void update(Iletisim Iletisim) {
+        try {
+            this.getDao().update(Iletisim);
+            System.out.println("İletişim başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
+        }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
-        list = dao.read();
+    public void delete(Iletisim sa) {
+        this.getDao().delete(sa);
+    }
+
+    public Iletisim getSelectedIletisim() {
+        return entity;
+    }
+
+    public void setSelectedIletisim(Iletisim selectedIletisim) {
+        this.entity = selectedIletisim;
     }
 }
-

@@ -12,7 +12,7 @@ public class IletisimDAO extends DBConnection {
 
     public void create(Iletisim iletisim) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO Iletisim (user_id, restaurant_id, mesaj) VALUES (?, ?, ?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO iletisim (user_id, restaurant_id, mesaj) VALUES (?, ?, ?)")) {
 
             ps.setInt(1, iletisim.getUser().getId());
             ps.setInt(2, iletisim.getRestaurant().getId());
@@ -27,7 +27,7 @@ public class IletisimDAO extends DBConnection {
     public List<Iletisim> read() {
         List<Iletisim> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Iletisim");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM iletisim");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -48,7 +48,7 @@ public class IletisimDAO extends DBConnection {
 
     public void update(Iletisim iletisim) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE Iletisim SET user_id = ?, restaurant_id = ?, mesaj = ? WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE iletisim SET user_id = ?, restaurant_id = ?, mesaj = ? WHERE id = ?")) {
 
             ps.setInt(1, iletisim.getUser().getId());
             ps.setInt(2, iletisim.getRestaurant().getId());
@@ -60,16 +60,20 @@ public class IletisimDAO extends DBConnection {
             System.out.println(e.getMessage());
         }
     }
+    
+    public void delete(Iletisim sa) {
+        try {
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Iletisim WHERE id = ?")) {
+            Statement st = (Statement) this.getConnect().createStatement();
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            String query0 = "UPDATE iletisim SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from iletisim where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

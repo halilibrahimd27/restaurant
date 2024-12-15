@@ -3,30 +3,77 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/SuperAdminPaneli/AdminSil.xhtml</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/GenericBean.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/GenericDAO.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/AdminDAO.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/CalisanBean.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/SuperAdminPaneli/SuperAdmin.xhtml</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/NavigationBean.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/SuperAdminPaneli/AdminEkle.xhtml</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/util/DBConnection.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/AdminBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/GeriBildirimDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/Templates/İşlemlerTemplate.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/Templates/YorumlarveMesajlarTemplate.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/converter/IletisimConverter.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/SiparisDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/Odeme.java</file>
             <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/Admin.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/SuperAdmin.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/YemekDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/VardiyaDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/UsersDAO.java</file>
             <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/AdminPaneli/Admin.xhtml</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/SuperAdminDAO.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/nbproject/project.properties</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/KullaniciPaneli/SiparisVer.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/TeslimatDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/GarsonBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/Vardiya.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/IletisimDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/RestaurantDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/SuperAdminBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/GarsonDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/KullaniciPaneli/Iletisim.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/KullaniciPaneli/uyeOl.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/TedarikciBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/TedarikciDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/CalisanBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/Yemek.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/AdminPaneli/KullaniciEkle.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/IletisimBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/Indirim.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/AdminPaneli/KullaniciIslemleri.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/SuperAdmin.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/RezervasyonDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/IndirimBean.java</file>
             <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/CalisanDAO.java</file>
             <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/TatliBean.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/GarsonBean.java</file>
             <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/SuperAdminPaneli/AdminGuncelle.xhtml</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/SuperAdminBean.java</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/SuperAdminPaneli/SuperAdminIslemleri.xhtml</file>
-            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/GarsonDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/OdemeDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/SiparisBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/GenericBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/KullaniciPaneli/girisYap.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/KullaniciPaneli/AnaSayfa.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/StokDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/util/DBConnection.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/AdminBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/SessionBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/conf/MANIFEST.MF</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/AdminPaneli/KullaniciSil.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/RestaurantBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/SuperAdminDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/MenuDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/MasaDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/OdemeBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/AdminPaneli/AdminIslemleri.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/Masa.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/TeslimatBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/VardiyaBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/StokBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/IcecekBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/web/SuperAdminPaneli/AdminSil.xhtml</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/GenericDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/YemekBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/AdminDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/entity/Users.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/NavigationBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/IcecekDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/GeriBildirimBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/YemekDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/MenuBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/TatliDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/RezervasyonBean.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/dao/IndirimDAO.java</file>
+            <file>file:/C:/Users/Halil/Desktop/Project/Restaurant/src/java/bean/UsersBean.java</file>
         </group>
     </open-files>
 </project-private>

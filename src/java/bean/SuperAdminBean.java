@@ -37,8 +37,7 @@ public class SuperAdminBean implements Serializable {
 
     public String login22() {
         SuperAdmin superadmin = this.getDao().getSuperAdmin(this.username, this.password);
-        if ((getUsername().equals("ibo")) && (getPassword().equals("345"))) {
-            //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("admin", admin);
+        if ((getUsername().equals("halil")) && (getPassword().equals("123"))) {
             return "/SuperAdminPaneli/SuperAdminIslemleri?faces-redirect=true";
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("kullanıcı adı veya şifre hatalı"));

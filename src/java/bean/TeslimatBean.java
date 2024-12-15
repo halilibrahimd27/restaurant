@@ -1,27 +1,21 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bean;
 
-/**
- *
- * @author Halil
- */
 import dao.TeslimatDAO;
 import entity.Teslimat;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
+
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = " teslimatBean")
+@Named("teslimatBean")
 @SessionScoped
 public class TeslimatBean implements Serializable {
 
-    private Teslimat entity = new Teslimat();
-    private List<Teslimat> list;
     private TeslimatDAO dao = new TeslimatDAO();
+    private List<Teslimat> list;
+    private Teslimat entity = new Teslimat();
+
 
     public Teslimat getEntity() {
         return entity;
@@ -30,28 +24,49 @@ public class TeslimatBean implements Serializable {
     public void setEntity(Teslimat entity) {
         this.entity = entity;
     }
+    public TeslimatDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new TeslimatDAO();
+        }
+        return dao;
+    }
+
+    public void setDao(TeslimatDAO dao) {
+        this.dao = dao;
+    }
 
     public List<Teslimat> getList() {
-        if (list == null) {
-            list = dao.read();
-        }
+        this.list = getDao().read();
         return list;
     }
 
+    public void setList(List<Teslimat> list) {
+        this.list = list;
+    }
+
     public void create() {
-        dao.create(entity);
-        list = dao.read();
-        entity = new Teslimat();
+        this.getDao().create(entity);
+        this.entity = new Teslimat();
     }
 
-    public void update() {
-        dao.update(entity);
-        list = dao.read();
-        entity = new Teslimat();
+    public void update(Teslimat Teslimat) {
+        try {
+            this.getDao().update(Teslimat);
+            System.out.println("Teslimat başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
+        }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
-        list = dao.read();
+    public void delete(Teslimat sa) {
+        this.getDao().delete(sa);
+    }
+
+    public Teslimat getSelectedTeslimat() {
+        return entity;
+    }
+
+    public void setSelectedTeslimat(Teslimat selectedTeslimat) {
+        this.entity = selectedTeslimat;
     }
 }

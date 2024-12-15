@@ -7,7 +7,7 @@ import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = " geriBildirimBean")
+@Named("geriBildirimBean")
 @SessionScoped
 public class GeriBildirimBean implements Serializable {
 
@@ -23,27 +23,41 @@ public class GeriBildirimBean implements Serializable {
         this.entity = entity;
     }
 
-    public List<GeriBildirim> getList() {
-        if (list == null) {
-            list = dao.read();
+    public GeriBildirimDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new GeriBildirimDAO();
         }
+        return dao;
+    }
+
+    public void setDao(GeriBildirimDAO dao) {
+        this.dao = dao;
+    }
+
+    public List<GeriBildirim> getList() {
+        this.list = getDao().read();
         return list;
     }
 
+    public void setList(List<GeriBildirim> list) {
+        this.list = list;
+    }
+
     public void create() {
-        dao.create(entity);
-        list = dao.read(); // Listeyi güncelle
-        entity = new GeriBildirim(); // Formu sıfırla
+        this.getDao().create(entity);
+        this.entity = new GeriBildirim();
     }
 
-    public void update() {
-        dao.update(entity);
-        list = dao.read(); // Listeyi güncelle
-        entity = new GeriBildirim(); // Formu sıfırla
+    public void update(GeriBildirim GeriBildirim) {
+        try {
+            this.getDao().update(GeriBildirim);
+            System.out.println("Geri Bildirim başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
+        }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
-        list = dao.read(); // Listeyi güncelle
+    public void delete(GeriBildirim sa) {
+        this.getDao().delete(sa);
     }
 }

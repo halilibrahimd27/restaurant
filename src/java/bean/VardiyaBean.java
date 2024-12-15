@@ -1,27 +1,22 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package bean;
 
-/**
- *
- * @author Halil
- */
 import dao.VardiyaDAO;
 import entity.Vardiya;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
+
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = " vardiyaBean")
+@Named("vardiyaBean")
 @SessionScoped
 public class VardiyaBean implements Serializable {
 
-    private Vardiya entity = new Vardiya();
-    private List<Vardiya> list;
     private VardiyaDAO dao = new VardiyaDAO();
+    private List<Vardiya> list;
+    private Vardiya entity = new Vardiya();
+
 
     public Vardiya getEntity() {
         return entity;
@@ -30,29 +25,49 @@ public class VardiyaBean implements Serializable {
     public void setEntity(Vardiya entity) {
         this.entity = entity;
     }
+    public VardiyaDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new VardiyaDAO();
+        }
+        return dao;
+    }
+
+    public void setDao(VardiyaDAO dao) {
+        this.dao = dao;
+    }
 
     public List<Vardiya> getList() {
-        if (list == null) {
-            list = dao.read();
-        }
+        this.list = getDao().read();
         return list;
     }
 
+    public void setList(List<Vardiya> list) {
+        this.list = list;
+    }
+
     public void create() {
-        dao.create(entity);
-        list = dao.read();
-        entity = new Vardiya();
+        this.getDao().create(entity);
+        this.entity = new Vardiya();
     }
 
-    public void update() {
-        dao.update(entity);
-        list = dao.read();
-        entity = new Vardiya();
+    public void update(Vardiya Vardiya) {
+        try {
+            this.getDao().update(Vardiya);
+            System.out.println("Vardiya başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
+        }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
-        list = dao.read();
+    public void delete(Vardiya sa) {
+        this.getDao().delete(sa);
+    }
+
+    public Vardiya getSelectedVardiya() {
+        return entity;
+    }
+
+    public void setSelectedVardiya(Vardiya selectedVardiya) {
+        this.entity = selectedVardiya;
     }
 }
-

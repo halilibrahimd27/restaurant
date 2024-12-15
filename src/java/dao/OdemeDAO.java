@@ -11,7 +11,7 @@ public class OdemeDAO extends DBConnection {
 
     public void create(Odeme odeme) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("INSERT INTO Odeme (tarih, amount, siparis_id) VALUES (?, ?, ?)")) {
+             PreparedStatement ps = conn.prepareStatement("INSERT INTO odeme (tarih, amount, siparis_id) VALUES (?, ?, ?)")) {
 
             ps.setDate(1, new java.sql.Date(odeme.getTarih().getTime()));
             ps.setBigDecimal(2, odeme.getAmount());
@@ -26,7 +26,7 @@ public class OdemeDAO extends DBConnection {
     public List<Odeme> read() {
         List<Odeme> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Odeme");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM odeme");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -47,7 +47,7 @@ public class OdemeDAO extends DBConnection {
 
     public void update(Odeme odeme) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE Odeme SET tarih = ?, amount = ?, siparis_id = ? WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE odeme SET tarih = ?, amount = ?, siparis_id = ? WHERE id = ?")) {
 
             ps.setDate(1, new java.sql.Date(odeme.getTarih().getTime()));
             ps.setBigDecimal(2, odeme.getAmount());
@@ -60,22 +60,26 @@ public class OdemeDAO extends DBConnection {
         }
     }
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Odeme WHERE id = ?")) {
+    public void delete(Odeme sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            String query0 = "UPDATE odeme SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from odeme where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 
     public Odeme findById(int id) {
         Odeme odeme = null;
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Odeme WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM odeme WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();

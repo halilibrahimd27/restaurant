@@ -28,7 +28,7 @@ public class VardiyaDAO extends DBConnection {
     public List<Vardiya> read() {
         List<Vardiya> list = new ArrayList<>();
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Vardiya");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM vardiya");
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
@@ -56,7 +56,7 @@ public class VardiyaDAO extends DBConnection {
     public Vardiya findById(int id) {
         Vardiya vardiya = null;
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("SELECT * FROM Vardiya WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM vardiya WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -84,7 +84,7 @@ public class VardiyaDAO extends DBConnection {
     // UPDATE: Bir vardiya kaydını günceller
     public void update(Vardiya vardiya) {
         try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("UPDATE Vardiya SET saatler = ?, calisan_id = ? WHERE id = ?")) {
+             PreparedStatement ps = conn.prepareStatement("UPDATE vardiya SET saatler = ?, calisan_id = ? WHERE id = ?")) {
 
             ps.setString(1, vardiya.getSaatler());
             ps.setInt(2, vardiya.getCalisan().getId());
@@ -96,16 +96,19 @@ public class VardiyaDAO extends DBConnection {
         }
     }
 
-    // DELETE: Bir vardiya kaydını siler
-    public void delete(int id) {
-        try (Connection conn = this.getConnect();
-             PreparedStatement ps = conn.prepareStatement("DELETE FROM Vardiya WHERE id = ?")) {
+    public void delete(Vardiya sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println("VardiyaDAO.delete hatası: " + e.getMessage());
+            String query0 = "UPDATE vardiya SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from vardiya where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
+
     }
 }

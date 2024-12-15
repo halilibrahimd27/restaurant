@@ -15,7 +15,7 @@ import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.List;
 
-@Named(value = " garsonBean")
+@Named("garsonBean")
 @SessionScoped
 public class GarsonBean implements Serializable {
 
@@ -31,27 +31,41 @@ public class GarsonBean implements Serializable {
         this.entity = entity;
     }
 
-    public List<Garson> getList() {
-        if (list == null) {
-            list = dao.read();
+    public GarsonDAO getDao() {
+        if (this.dao == null) {
+            this.dao = new GarsonDAO();
         }
+        return dao;
+    }
+
+    public void setDao(GarsonDAO dao) {
+        this.dao = dao;
+    }
+
+    public List<Garson> getList() {
+        this.list = getDao().read();
         return list;
     }
 
+    public void setList(List<Garson> list) {
+        this.list = list;
+    }
+
     public void create() {
-        dao.create(entity);
-        list = dao.read();
-        entity = new Garson();
+        this.getDao().create(entity);
+        this.entity = new Garson();
     }
 
-    public void update() {
-        dao.update(entity);
-        list = dao.read();
-        entity = new Garson();
+    public void update(Garson Garson) {
+        try {
+            this.getDao().update(Garson);
+            System.out.println("Garson başarıyla güncellendi.");
+        } catch (Exception e) {
+            System.out.println("Güncelleme sırasında hata: " + e.getMessage());
+        }
     }
 
-    public void delete(int id) {
-        dao.delete(id);
-        list = dao.read();
+    public void delete(Garson sa) {
+        this.getDao().delete(sa);
     }
 }

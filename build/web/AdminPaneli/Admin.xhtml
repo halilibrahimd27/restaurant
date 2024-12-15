@@ -12,13 +12,13 @@
     <h:body>
 
         <header class="header">
-            <a href="#">Filmoloji Admin Paneli</a>
+            <a href="#">Restaurant Admin Paneli</a>
         </header>
 
         <h:form id="admin-form">
             <div class="adminGiris">
                 <i class="fa-solid fa-user"></i>
-                <h:inputText id="username" value="#{sessionBean.entity.username}" required="true" requiredMessage="Bu alan zorunludur" styleClass="user"> 
+                <h:inputText id="username" value="#{sessionBean.username}" required="true" requiredMessage="Bu alan zorunludur" styleClass="user"> 
                     <f:ajax event="blur" render="usernameMessage"/>
                 </h:inputText>
                 <h:message id="usernameMessage" for="username" style="color: red;font-size: 10pt;" /><br/>
@@ -29,7 +29,7 @@
                 <h:inputSecret id="password" value="#{sessionBean.entity.password}" required="true" requiredMessage="Şifre girmelisiniz" styleClass="password">
                     <f:ajax event="blur" render="passwordMessage"/>
                 </h:inputSecret>
-                <h:message id="passwordMessage" for="password" style="color: red;font-size: 10pt;"/>
+                <h:message id="passwordMessage" for="password" style="color:  red;font-size: 10pt;"/>
             </div>
 
             <h:commandButton value="Oturum Aç" action="#{sessionBean.login()}" styleClass="oturumAç">

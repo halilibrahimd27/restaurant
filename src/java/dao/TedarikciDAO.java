@@ -10,7 +10,7 @@ import java.util.List;
 public class TedarikciDAO extends DBConnection {
 
     public void create(Tedarikci tedarikci) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO Tedarikci (name, phone, restaurant_id) VALUES (?, ?, ?)")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("INSERT INTO tedarikci (name, phone, restaurant_id) VALUES (?, ?, ?)")) {
 
             ps.setString(1, tedarikci.getName());
             ps.setString(2, tedarikci.getPhone());
@@ -24,7 +24,7 @@ public class TedarikciDAO extends DBConnection {
 
     public List<Tedarikci> read() {
         List<Tedarikci> list = new ArrayList<>();
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Tedarikci"); ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM tedarikci"); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
                 Tedarikci tedarikci = new Tedarikci(
@@ -43,7 +43,7 @@ public class TedarikciDAO extends DBConnection {
     }
 
     public void update(Tedarikci tedarikci) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE Tedarikci SET name = ?, phone = ?, restaurant_id = ? WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("UPDATE tedarikci SET name = ?, phone = ?, restaurant_id = ? WHERE id = ?")) {
 
             ps.setString(1, tedarikci.getName());
             ps.setString(2, tedarikci.getPhone());
@@ -56,20 +56,24 @@ public class TedarikciDAO extends DBConnection {
         }
     }
 
-    public void delete(int id) {
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("DELETE FROM Tedarikci WHERE id = ?")) {
+    public void delete(Tedarikci sa) {
+        try {
 
-            ps.setInt(1, id);
-            ps.executeUpdate();
+            Statement st = (Statement) this.getConnect().createStatement();
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            String query0 = "UPDATE tedarikci SET id = id - 1 WHERE id > " + sa.getId();
+            String query1 = "DELETE from tedarikci where id=" + sa.getId();
+            st.executeUpdate(query1);
+            st.executeUpdate(query0);
+
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
-    }
 
+    }
     public Tedarikci findById(int id) {
         Tedarikci tedarikci = null;
-        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM Tedarikci WHERE id = ?")) {
+        try (Connection conn = this.getConnect(); PreparedStatement ps = conn.prepareStatement("SELECT * FROM tedarikci WHERE id = ?")) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
